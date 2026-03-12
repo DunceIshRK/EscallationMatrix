@@ -7,10 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
+
         :root {
-            --primary: #4F46E5; --primary-light: #EEF2FF; --bg-color: #F9FAFB; --surface: #FFFFFF; 
-            --text-main: #111827; --text-muted: #6B7280; --border: #E5E7EB; 
-            --radius-lg: 16px; --radius-md: 8px;
+            --primary: #4F46E5;        
+            --primary-light: #EEF2FF;  
+            --bg-color: #F9FAFB;       
+            --surface: #FFFFFF;        
+            --text-main: #111827;      
+            --text-muted: #6B7280;     
+            --border: #E5E7EB;         
+            --radius-lg: 16px;
+            --radius-md: 8px;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -33,11 +40,42 @@
 
         .main-content { flex-grow: 1; min-width: 0; width: 100%; }
 
+        /* Updated Search Container & Clear Button */
         .search-container { position: relative; margin-bottom: 24px; width: 100%; }
-        .search-box { width: 100%; padding: 18px 24px 18px 50px; font-size: 16px; font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--surface); border: 2px solid transparent; border-radius: 50px; box-shadow: var(--shadow-sm); transition: var(--transition); color: var(--text-main); }
+        .search-box { 
+            width: 100%; 
+            padding: 18px 50px 18px 50px; /* Added right padding for the X */
+            font-size: 16px; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--surface); 
+            border: 2px solid transparent; 
+            border-radius: 50px; 
+            box-shadow: var(--shadow-sm); 
+            transition: var(--transition); 
+            color: var(--text-main); 
+        }
         .search-box:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
         .search-box::placeholder { color: #9CA3AF; }
-        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #9CA3AF; }
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #9CA3AF; pointer-events: none; }
+        
+        .clear-btn {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            cursor: pointer;
+            display: none; /* Hidden until user types */
+            padding: 4px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .clear-btn:hover { color: var(--text-main); background: #F3F4F6; }
+        .clear-btn svg { width: 18px; height: 18px; }
 
         .faq-item { background: var(--surface); margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: var(--transition); overflow: hidden; width: 100%; }
         .faq-header { padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px; transition: var(--transition); word-wrap: break-word; }
@@ -62,7 +100,6 @@
         .arrow { font-size: 0.8em; color: #9CA3AF; transition: transform 0.3s ease; flex-shrink: 0; }
         .active .arrow { transform: rotate(180deg); color: var(--primary); }
         
-        /* Optional: Add a subtle click counter indicator */
         .click-badge { font-size: 0.75em; color: #9CA3AF; font-weight: 400; margin-left: auto; margin-right: 15px; }
 
         .status-message { text-align: center; color: var(--text-muted); margin-top: 40px; font-weight: 500; }
@@ -78,9 +115,9 @@
             .category-item { flex-shrink: 0; margin-bottom: 0; background: #fff; border: 1px solid var(--border); }
             .faq-header { padding: 16px; font-size: 15px; }
             .faq-content { padding: 16px; }
-            .search-box { padding: 16px 20px 16px 45px; font-size: 15px; }
+            .search-box { padding: 16px 45px 16px 45px; font-size: 15px; }
             table { min-width: 450px; }
-            .click-badge { display: none; } /* Hide on mobile to save space */
+            .click-badge { display: none; }
         }
     </style>
 </head>
@@ -102,10 +139,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
                 <input type="text" id="search" class="search-box" placeholder="Search by problem or category..." onkeyup="filterFAQ()">
+                
+                <button id="clear-search" class="clear-btn" onclick="clearSearch()" aria-label="Clear Search">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
 
             <div id="faq-container">
-                <div class="status-message">Fetching the latest data...</div>
+                <div class="status-message">Loading your problems & FAQs....</div>
             </div>
         </main>
     </div>
@@ -161,6 +204,7 @@
         function selectCategory(cat) {
             currentCategory = cat;
             document.getElementById('search').value = ''; 
+            document.getElementById('clear-search').style.display = 'none'; // Hide clear button on category switch
             renderCategories(); 
             filterFAQ(); 
         }
@@ -174,7 +218,7 @@
 
             container.innerHTML = items.map((item, i) => `
                 <div class="faq-item">
-                    <div class="faq-header" onclick="toggleAccordion(${i}, this)" id="header-${i}" data-problem="${item.problem.replace(/"/g, '&quot;')}">
+                    <div class="faq-header" onclick="toggleAccordion(${i}, this)" id="header-${i}" data-problem="${item.problem ? item.problem.replace(/"/g, '&quot;') : ''}">
                         <span>${item.problem}</span>
                         <span class="click-badge">${item.clicks > 0 ? item.clicks + ' views' : ''}</span>
                         <span class="arrow">▼</span>
@@ -231,22 +275,34 @@
                 content.style.display = "block";
                 header.classList.add('active');
                 
-                // BACKGROUND TASK: Send click data to Google Sheets
+                // Track click quietly
                 const problemTitle = element.getAttribute('data-problem');
-                const trackingUrl = API_URL + '?action=click&problem=' + encodeURIComponent(problemTitle);
-                
-                // We use mode 'no-cors' so it sends the request silently without interrupting the user
-                fetch(trackingUrl, { mode: 'no-cors' }).catch(err => console.log('Tracking error', err));
+                if (problemTitle) {
+                    const trackingUrl = API_URL + '?action=click&problem=' + encodeURIComponent(problemTitle);
+                    fetch(trackingUrl, { mode: 'no-cors' }).catch(err => console.log('Tracking error', err));
+                }
             }
         }
 
+        // INTELLIGENT SEARCH
         function filterFAQ() {
-            const query = document.getElementById('search').value.toLowerCase();
+            const searchInput = document.getElementById('search');
+            const clearBtn = document.getElementById('clear-search');
+            const queryText = searchInput.value.toLowerCase();
+            
+            // Show or hide the 'X' button
+            clearBtn.style.display = queryText.length > 0 ? 'flex' : 'none';
+
+            // Split search into individual keywords
+            const searchWords = queryText.split(' ').filter(word => word.trim() !== '');
+
             const filtered = faqData.filter(item => {
-                const matchesSearch = 
-                    (item.problem && item.problem.toLowerCase().includes(query)) || 
-                    (item.category && item.category.toLowerCase().includes(query)) ||
-                    (item.solution && item.solution.toLowerCase().includes(query));
+                // Must contain ALL words typed, anywhere in problem, category, or solution
+                const matchesSearch = searchWords.length === 0 || searchWords.every(word => 
+                    (item.problem && item.problem.toLowerCase().includes(word)) || 
+                    (item.category && item.category.toLowerCase().includes(word)) ||
+                    (item.solution && item.solution.toLowerCase().includes(word))
+                );
                 
                 let matchesCategory = false;
                 if (currentCategory === 'All') {
@@ -259,12 +315,16 @@
                 return matchesSearch && matchesCategory;
             });
 
+            // Re-render items cleanly collapsed
             renderItems(filtered);
-            
-            if (query.length > 0) {
-                document.querySelectorAll('.faq-content').forEach(el => el.style.display = 'block');
-                document.querySelectorAll('.faq-header').forEach(el => el.classList.add('active'));
-            }
+        }
+
+        // CLEAR SEARCH FUNCTION
+        function clearSearch() {
+            const searchInput = document.getElementById('search');
+            searchInput.value = ''; // Wipe text
+            filterFAQ(); // Reset the list
+            searchInput.focus(); // Bring the mobile keyboard back up
         }
 
         fetchSheetData();
