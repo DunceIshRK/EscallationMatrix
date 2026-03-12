@@ -40,11 +40,10 @@
 
         .main-content { flex-grow: 1; min-width: 0; width: 100%; }
 
-        /* Updated Search Container & Clear Button */
         .search-container { position: relative; margin-bottom: 24px; width: 100%; }
         .search-box { 
             width: 100%; 
-            padding: 18px 50px 18px 50px; /* Added right padding for the X */
+            padding: 18px 50px 18px 50px; 
             font-size: 16px; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--surface); 
@@ -67,7 +66,7 @@
             border: none;
             color: #9CA3AF;
             cursor: pointer;
-            display: none; /* Hidden until user types */
+            display: none; 
             padding: 4px;
             border-radius: 50%;
             align-items: center;
@@ -148,7 +147,7 @@
             </div>
 
             <div id="faq-container">
-                <div class="status-message">Loading your problems & FAQs....</div>
+                <div class="status-message">Fetching the latest data...</div>
             </div>
         </main>
     </div>
@@ -158,6 +157,7 @@
         
         let faqData = [];
         let currentCategory = 'All';
+        let clickedItems = new Set(); // Stores tracked clicks for the session
 
         async function fetchSheetData() {
             try {
@@ -204,7 +204,7 @@
         function selectCategory(cat) {
             currentCategory = cat;
             document.getElementById('search').value = ''; 
-            document.getElementById('clear-search').style.display = 'none'; // Hide clear button on category switch
+            document.getElementById('clear-search').style.display = 'none'; 
             renderCategories(); 
             filterFAQ(); 
         }
@@ -275,29 +275,26 @@
                 content.style.display = "block";
                 header.classList.add('active');
                 
-                // Track click quietly
+                // Track click quietly, but only once per session
                 const problemTitle = element.getAttribute('data-problem');
-                if (problemTitle) {
+                if (problemTitle && !clickedItems.has(problemTitle)) {
+                    clickedItems.add(problemTitle); // Add it to memory
                     const trackingUrl = API_URL + '?action=click&problem=' + encodeURIComponent(problemTitle);
                     fetch(trackingUrl, { mode: 'no-cors' }).catch(err => console.log('Tracking error', err));
                 }
             }
         }
 
-        // INTELLIGENT SEARCH
         function filterFAQ() {
             const searchInput = document.getElementById('search');
             const clearBtn = document.getElementById('clear-search');
             const queryText = searchInput.value.toLowerCase();
             
-            // Show or hide the 'X' button
             clearBtn.style.display = queryText.length > 0 ? 'flex' : 'none';
 
-            // Split search into individual keywords
             const searchWords = queryText.split(' ').filter(word => word.trim() !== '');
 
             const filtered = faqData.filter(item => {
-                // Must contain ALL words typed, anywhere in problem, category, or solution
                 const matchesSearch = searchWords.length === 0 || searchWords.every(word => 
                     (item.problem && item.problem.toLowerCase().includes(word)) || 
                     (item.category && item.category.toLowerCase().includes(word)) ||
@@ -315,16 +312,14 @@
                 return matchesSearch && matchesCategory;
             });
 
-            // Re-render items cleanly collapsed
             renderItems(filtered);
         }
 
-        // CLEAR SEARCH FUNCTION
         function clearSearch() {
             const searchInput = document.getElementById('search');
-            searchInput.value = ''; // Wipe text
-            filterFAQ(); // Reset the list
-            searchInput.focus(); // Bring the mobile keyboard back up
+            searchInput.value = ''; 
+            filterFAQ(); 
+            searchInput.focus(); 
         }
 
         fetchSheetData();
