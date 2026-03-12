@@ -7,17 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
-
         :root {
-            --primary: #4F46E5;        
-            --primary-light: #EEF2FF;  
-            --bg-color: #F9FAFB;       
-            --surface: #FFFFFF;        
-            --text-main: #111827;      
-            --text-muted: #6B7280;     
-            --border: #E5E7EB;         
-            --radius-lg: 16px;
-            --radius-md: 8px;
+            --primary: #4F46E5; --primary-light: #EEF2FF; --bg-color: #F9FAFB; --surface: #FFFFFF; 
+            --text-main: #111827; --text-muted: #6B7280; --border: #E5E7EB; 
+            --radius-lg: 16px; --radius-md: 8px;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -68,6 +61,9 @@
 
         .arrow { font-size: 0.8em; color: #9CA3AF; transition: transform 0.3s ease; flex-shrink: 0; }
         .active .arrow { transform: rotate(180deg); color: var(--primary); }
+        
+        /* Optional: Add a subtle click counter indicator */
+        .click-badge { font-size: 0.75em; color: #9CA3AF; font-weight: 400; margin-left: auto; margin-right: 15px; }
 
         .status-message { text-align: center; color: var(--text-muted); margin-top: 40px; font-weight: 500; }
 
@@ -84,6 +80,7 @@
             .faq-content { padding: 16px; }
             .search-box { padding: 16px 20px 16px 45px; font-size: 15px; }
             table { min-width: 450px; }
+            .click-badge { display: none; } /* Hide on mobile to save space */
         }
     </style>
 </head>
@@ -132,23 +129,18 @@
 
         function renderCategories() {
             const list = document.getElementById('category-list');
-            
-            // 1. Extract all categories, splitting by comma for multi-category items
             let allCategories = [];
             faqData.forEach(item => {
                 if (item.category) {
-                    // Split by comma and clean up spaces
                     const cats = item.category.split(',').map(c => c.trim()).filter(c => c !== "");
                     allCategories.push(...cats);
                 }
             });
             
-            // 2. Get unique categories and sort them
             const uniqueCategories = [...new Set(allCategories)].sort();
             const categories = ['All', ...uniqueCategories];
 
             list.innerHTML = categories.map(cat => {
-                // 3. Count items. If an item has "NSO, Finance", it counts for both.
                 const count = cat === 'All' ? faqData.length : faqData.filter(i => {
                     if (!i.category) return false;
                     const itemCats = i.category.split(',').map(c => c.trim());
@@ -182,8 +174,9 @@
 
             container.innerHTML = items.map((item, i) => `
                 <div class="faq-item">
-                    <div class="faq-header" onclick="toggleAccordion(${i})" id="header-${i}">
+                    <div class="faq-header" onclick="toggleAccordion(${i}, this)" id="header-${i}" data-problem="${item.problem.replace(/"/g, '&quot;')}">
                         <span>${item.problem}</span>
+                        <span class="click-badge">${item.clicks > 0 ? item.clicks + ' views' : ''}</span>
                         <span class="arrow">▼</span>
                     </div>
                     <div class="faq-content" id="content-${i}">
@@ -226,7 +219,7 @@
             `).join('');
         }
 
-        function toggleAccordion(index) {
+        function toggleAccordion(index, element) {
             const content = document.getElementById(`content-${index}`);
             const header = document.getElementById(`header-${index}`);
             const isOpen = content.style.display === "block";
@@ -237,19 +230,24 @@
             if (!isOpen) {
                 content.style.display = "block";
                 header.classList.add('active');
+                
+                // BACKGROUND TASK: Send click data to Google Sheets
+                const problemTitle = element.getAttribute('data-problem');
+                const trackingUrl = API_URL + '?action=click&problem=' + encodeURIComponent(problemTitle);
+                
+                // We use mode 'no-cors' so it sends the request silently without interrupting the user
+                fetch(trackingUrl, { mode: 'no-cors' }).catch(err => console.log('Tracking error', err));
             }
         }
 
         function filterFAQ() {
             const query = document.getElementById('search').value.toLowerCase();
             const filtered = faqData.filter(item => {
-                // Search logic
                 const matchesSearch = 
                     (item.problem && item.problem.toLowerCase().includes(query)) || 
                     (item.category && item.category.toLowerCase().includes(query)) ||
                     (item.solution && item.solution.toLowerCase().includes(query));
                 
-                // Multi-category filtering logic
                 let matchesCategory = false;
                 if (currentCategory === 'All') {
                     matchesCategory = true;
