@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Escalation Matrix & FAQs</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -153,10 +153,6 @@
             transition: var(--transition);
             overflow: hidden;
         }
-        .faq-item:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: #D1D5DB;
-        }
         
         .faq-header { 
             padding: 20px 24px; 
@@ -184,9 +180,15 @@
         .category-italic { font-style: italic; font-weight: 500; color: var(--text-muted); margin-left: 8px; }
         .description-text { margin-bottom: 24px; color: var(--text-muted); font-size: 15px; }
 
-        /* Beautiful Modern Table */
-        .table-container { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; background: var(--surface); }
+        /* Beautiful Mobile-Responsive Table */
+        .table-container { 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            overflow-x: auto; /* Enables horizontal swipe on mobile */
+            -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+            background: var(--surface);
+        }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; /* Ensures table doesn't squish too much */ }
         th, td { padding: 16px; text-align: left; font-size: 0.95em; border-bottom: 1px solid var(--border); }
         tr:last-child td { border-bottom: none; }
         th { background-color: #F9FAFB; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75em; letter-spacing: 0.05em; }
@@ -194,15 +196,51 @@
         tr:hover td { background-color: #F9FAFB; }
         .center-align { text-align: center; }
 
-        .arrow { font-size: 0.8em; color: #9CA3AF; transition: transform 0.3s ease; }
+        .arrow { font-size: 0.8em; color: #9CA3AF; transition: transform 0.3s ease; flex-shrink: 0; margin-left: 15px; }
         .active .arrow { transform: rotate(180deg); color: var(--primary); }
 
         .status-message { text-align: center; color: var(--text-muted); margin-top: 40px; font-weight: 500; }
 
-        /* Mobile Responsiveness */
+        /* --- MOBILE RESPONSIVENESS OVERRIDES --- */
         @media (max-width: 800px) {
+            body { padding: 20px 15px; }
+            h2.main-title { font-size: 24px; margin-bottom: 24px; text-align: left; }
+            
             .app-layout { flex-direction: column; gap: 20px; }
-            .sidebar { width: 100%; box-sizing: border-box; }
+            
+            /* Sidebar turns into a horizontal swipeable row */
+            .sidebar { 
+                width: 100%; 
+                padding: 12px; 
+                box-sizing: border-box; 
+                background: transparent;
+                border: none;
+                box-shadow: none;
+            }
+            .sidebar-title { display: none; } /* Hide the word 'Categories' to save space */
+            
+            #category-list { 
+                display: flex; 
+                overflow-x: auto; 
+                gap: 10px; 
+                padding-bottom: 5px; 
+                /* Hide scrollbar for clean look */
+                -ms-overflow-style: none; 
+                scrollbar-width: none; 
+            }
+            #category-list::-webkit-scrollbar { display: none; }
+            
+            .category-item { 
+                flex-shrink: 0; /* Prevents text from wrapping */
+                margin-bottom: 0; 
+                background: #fff;
+                border: 1px solid var(--border);
+            }
+            
+            /* Adjust padding for mobile fingers */
+            .faq-header { padding: 16px; font-size: 15px; }
+            .faq-content { padding: 16px; }
+            .search-box { padding: 16px 20px 16px 45px; font-size: 15px; }
         }
     </style>
 </head>
@@ -233,7 +271,6 @@
     </div>
 
     <script>
-        // UPDATED: Using the new Google Apps Script URL provided
         const API_URL = 'https://script.google.com/macros/s/AKfycbx2gwIHnqtmgMyfFKkZKYvZv4DUGNhGAk89lsfYUOigjvWObdTMtGmhrsJysgA-ICJcxQ/exec';
         
         let faqData = [];
@@ -250,20 +287,13 @@
             }
         }
 
-        // Dynamically build the sidebar based on sheet data
         function renderCategories() {
             const list = document.getElementById('category-list');
-            
-            // Extract unique categories, remove blanks, and sort alphabetically
             const uniqueCategories = [...new Set(faqData.map(item => item.category).filter(c => c))].sort();
-            
-            // Create an array starting with "All", followed by the sorted categories
             const categories = ['All', ...uniqueCategories];
 
             list.innerHTML = categories.map(cat => {
-                // Count how many items belong to this category
                 const count = cat === 'All' ? faqData.length : faqData.filter(i => i.category === cat).length;
-                
                 return `
                     <div class="category-item ${cat === currentCategory ? 'active' : ''}" 
                          data-cat="${cat}" 
@@ -277,9 +307,9 @@
 
         function selectCategory(cat) {
             currentCategory = cat;
-            document.getElementById('search').value = ''; // Clear search when switching categories
-            renderCategories(); // Re-render to highlight the active category
-            filterFAQ(); // Filter the main list
+            document.getElementById('search').value = ''; 
+            renderCategories(); 
+            filterFAQ(); 
         }
 
         function renderItems(items) {
@@ -340,7 +370,6 @@
             const header = document.getElementById(`header-${index}`);
             const isOpen = content.style.display === "block";
 
-            // Close all others
             document.querySelectorAll('.faq-content').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.faq-header').forEach(el => el.classList.remove('active'));
 
@@ -352,23 +381,17 @@
 
         function filterFAQ() {
             const query = document.getElementById('search').value.toLowerCase();
-            
             const filtered = faqData.filter(item => {
-                // Match search text
                 const matchesSearch = 
                     (item.problem && item.problem.toLowerCase().includes(query)) || 
                     (item.category && item.category.toLowerCase().includes(query)) ||
                     (item.solution && item.solution.toLowerCase().includes(query));
-                
-                // Match selected category (or show all if 'All' is selected)
                 const matchesCategory = currentCategory === 'All' || item.category === currentCategory;
-
                 return matchesSearch && matchesCategory;
             });
 
             renderItems(filtered);
             
-            // Auto-expand all results if user is actively typing a search query
             if (query.length > 0) {
                 document.querySelectorAll('.faq-content').forEach(el => el.style.display = 'block');
                 document.querySelectorAll('.faq-header').forEach(el => el.classList.add('active'));
