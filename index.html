@@ -6,7 +6,6 @@
     <title>Escalation Matrix & FAQs</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* This prevents ANY element's padding from stretching it off-screen */
         * { box-sizing: border-box; }
 
         :root {
@@ -25,163 +24,40 @@
             --transition: all 0.3s ease;
         }
 
-        /* Lock the body width to stop horizontal wobble */
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
+        html, body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; max-width: 1200px; margin: 0 auto; padding: 40px 20px; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+        h2.main-title { font-size: 32px; font-weight: 700; color: var(--text-main); margin-bottom: 32px; letter-spacing: -0.02em; }
 
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 40px 20px; 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            line-height: 1.6;
-        }
-        
-        h2.main-title { 
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 32px; 
-            letter-spacing: -0.02em;
-        }
+        .app-layout { display: flex; gap: 40px; align-items: flex-start; width: 100%; }
 
-        .app-layout {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-            width: 100%;
-        }
-
-        .sidebar {
-            width: 260px;
-            flex-shrink: 0;
-            background: var(--surface);
-            padding: 24px 16px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-        }
-        .sidebar-title {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            font-weight: 700;
-            margin-bottom: 16px;
-            padding-left: 12px;
-        }
-        .category-item {
-            padding: 12px;
-            margin-bottom: 4px;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            color: var(--text-muted);
-            font-weight: 500;
-            transition: var(--transition);
-            font-size: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .sidebar { width: 260px; flex-shrink: 0; background: var(--surface); padding: 24px 16px; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .sidebar-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; margin-bottom: 16px; padding-left: 12px; }
+        .category-item { padding: 12px; margin-bottom: 4px; border-radius: var(--radius-md); cursor: pointer; color: var(--text-muted); font-weight: 500; transition: var(--transition); font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
         .category-item:hover { background-color: var(--bg-color); color: var(--text-main); }
         .category-item.active { background-color: var(--primary-light); color: var(--primary); font-weight: 600; }
-        .category-count {
-            background: var(--border);
-            color: var(--text-muted);
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
+        .category-count { background: var(--border); color: var(--text-muted); font-size: 12px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
         .category-item.active .category-count { background: var(--primary); color: white; }
 
-        .main-content {
-            flex-grow: 1;
-            min-width: 0; /* Strictly forces flex child to not expand past parent */
-            width: 100%;
-        }
+        .main-content { flex-grow: 1; min-width: 0; width: 100%; }
 
         .search-container { position: relative; margin-bottom: 24px; width: 100%; }
-        .search-box { 
-            width: 100%; 
-            padding: 18px 24px 18px 50px; 
-            font-size: 16px; 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--surface);
-            border: 2px solid transparent; 
-            border-radius: 50px; 
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-            color: var(--text-main);
-        }
+        .search-box { width: 100%; padding: 18px 24px 18px 50px; font-size: 16px; font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--surface); border: 2px solid transparent; border-radius: 50px; box-shadow: var(--shadow-sm); transition: var(--transition); color: var(--text-main); }
         .search-box:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
         .search-box::placeholder { color: #9CA3AF; }
         .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #9CA3AF; }
 
-        .faq-item { 
-            background: var(--surface); 
-            margin-bottom: 16px; 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-lg); 
-            box-shadow: var(--shadow-sm); 
-            transition: var(--transition);
-            overflow: hidden;
-            width: 100%;
-        }
-        
-        .faq-header { 
-            padding: 20px 24px; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            font-weight: 600; 
-            font-size: 16px;
-            transition: var(--transition);
-            word-wrap: break-word;
-        }
-        /* Allow the problem title to take up available space and wrap nicely */
+        .faq-item { background: var(--surface); margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: var(--transition); overflow: hidden; width: 100%; }
+        .faq-header { padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px; transition: var(--transition); word-wrap: break-word; }
         .faq-header span:first-child { flex: 1; padding-right: 15px; line-height: 1.4; }
         .faq-header.active { background-color: var(--primary-light); color: var(--primary); border-bottom: 1px solid var(--primary-light); }
-        
-        .faq-content { 
-            padding: 24px; 
-            display: none; 
-            border-top: 1px solid var(--border); 
-            width: 100%;
-        }
+        .faq-content { padding: 24px; display: none; border-top: 1px solid var(--border); width: 100%; }
         
         .label-row { margin-bottom: 4px; }
-        .bold-underlined { 
-            font-weight: 700; color: var(--text-main); text-decoration: underline; 
-            text-decoration-thickness: 2px; text-underline-offset: 4px; font-size: 1.05em; 
-        }
+        .bold-underlined { font-weight: 700; color: var(--text-main); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; font-size: 1.05em; }
         .category-italic { font-style: italic; font-weight: 500; color: var(--text-muted); margin-left: 8px; }
-        .description-text { 
-            margin-bottom: 24px; 
-            color: var(--text-muted); 
-            font-size: 15px; 
-            /* Force long text to wrap instead of stretching screen */
-            overflow-wrap: break-word; 
-            word-wrap: break-word; 
-            white-space: pre-line;
-        }
+        .description-text { margin-bottom: 24px; color: var(--text-muted); font-size: 15px; overflow-wrap: break-word; word-wrap: break-word; white-space: pre-line; }
 
-        /* Responsive Table Container */
-        .table-container { 
-            width: 100%;
-            border-radius: var(--radius-md); 
-            border: 1px solid var(--border); 
-            overflow-x: auto; 
-            -webkit-overflow-scrolling: touch; 
-            background: var(--surface);
-        }
+        .table-container { width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border); overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--surface); }
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
         th, td { padding: 14px 16px; text-align: left; font-size: 0.9em; border-bottom: 1px solid var(--border); }
         tr:last-child td { border-bottom: none; }
@@ -195,43 +71,18 @@
 
         .status-message { text-align: center; color: var(--text-muted); margin-top: 40px; font-weight: 500; }
 
-        /* Mobile Rules */
         @media (max-width: 800px) {
             body { padding: 20px 15px; }
             h2.main-title { font-size: 24px; margin-bottom: 24px; text-align: left; }
             .app-layout { flex-direction: column; gap: 20px; }
-            
-            .sidebar { 
-                width: 100%; 
-                padding: 12px; 
-                background: transparent;
-                border: none;
-                box-shadow: none;
-            }
+            .sidebar { width: 100%; padding: 12px; background: transparent; border: none; box-shadow: none; }
             .sidebar-title { display: none; }
-            
-            #category-list { 
-                display: flex; 
-                overflow-x: auto; 
-                gap: 10px; 
-                padding-bottom: 5px; 
-                -ms-overflow-style: none; 
-                scrollbar-width: none; 
-            }
+            #category-list { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; -ms-overflow-style: none; scrollbar-width: none; }
             #category-list::-webkit-scrollbar { display: none; }
-            
-            .category-item { 
-                flex-shrink: 0; 
-                margin-bottom: 0; 
-                background: #fff;
-                border: 1px solid var(--border);
-            }
-            
+            .category-item { flex-shrink: 0; margin-bottom: 0; background: #fff; border: 1px solid var(--border); }
             .faq-header { padding: 16px; font-size: 15px; }
             .faq-content { padding: 16px; }
             .search-box { padding: 16px 20px 16px 45px; font-size: 15px; }
-            
-            /* Give the table a slightly smaller min-width on phones to fit better naturally */
             table { min-width: 450px; }
         }
     </style>
@@ -257,7 +108,7 @@
             </div>
 
             <div id="faq-container">
-                <div class="status-message">Loading data... Kindly be patient...</div>
+                <div class="status-message">Fetching the latest data...</div>
             </div>
         </main>
     </div>
@@ -281,11 +132,29 @@
 
         function renderCategories() {
             const list = document.getElementById('category-list');
-            const uniqueCategories = [...new Set(faqData.map(item => item.category).filter(c => c))].sort();
+            
+            // 1. Extract all categories, splitting by comma for multi-category items
+            let allCategories = [];
+            faqData.forEach(item => {
+                if (item.category) {
+                    // Split by comma and clean up spaces
+                    const cats = item.category.split(',').map(c => c.trim()).filter(c => c !== "");
+                    allCategories.push(...cats);
+                }
+            });
+            
+            // 2. Get unique categories and sort them
+            const uniqueCategories = [...new Set(allCategories)].sort();
             const categories = ['All', ...uniqueCategories];
 
             list.innerHTML = categories.map(cat => {
-                const count = cat === 'All' ? faqData.length : faqData.filter(i => i.category === cat).length;
+                // 3. Count items. If an item has "NSO, Finance", it counts for both.
+                const count = cat === 'All' ? faqData.length : faqData.filter(i => {
+                    if (!i.category) return false;
+                    const itemCats = i.category.split(',').map(c => c.trim());
+                    return itemCats.includes(cat);
+                }).length;
+                
                 return `
                     <div class="category-item ${cat === currentCategory ? 'active' : ''}" 
                          data-cat="${cat}" 
@@ -374,11 +243,21 @@
         function filterFAQ() {
             const query = document.getElementById('search').value.toLowerCase();
             const filtered = faqData.filter(item => {
+                // Search logic
                 const matchesSearch = 
                     (item.problem && item.problem.toLowerCase().includes(query)) || 
                     (item.category && item.category.toLowerCase().includes(query)) ||
                     (item.solution && item.solution.toLowerCase().includes(query));
-                const matchesCategory = currentCategory === 'All' || item.category === currentCategory;
+                
+                // Multi-category filtering logic
+                let matchesCategory = false;
+                if (currentCategory === 'All') {
+                    matchesCategory = true;
+                } else if (item.category) {
+                    const itemCats = item.category.split(',').map(c => c.trim());
+                    matchesCategory = itemCats.includes(currentCategory);
+                }
+
                 return matchesSearch && matchesCategory;
             });
 
