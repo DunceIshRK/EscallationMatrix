@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4F46E5;        /* Vibrant Indigo */
-            --primary-light: #EEF2FF;  /* Soft Indigo Background */
-            --bg-color: #F9FAFB;       /* Light Gray Background */
-            --surface: #FFFFFF;        /* White Cards */
-            --text-main: #111827;      /* Dark Gray for Headings */
-            --text-muted: #6B7280;     /* Medium Gray for normal text */
-            --border: #E5E7EB;         /* Light Gray Borders */
+            --primary: #4F46E5;        
+            --primary-light: #EEF2FF;  
+            --bg-color: #F9FAFB;       
+            --surface: #FFFFFF;        
+            --text-main: #111827;      
+            --text-muted: #6B7280;     
+            --border: #E5E7EB;         
             --radius-lg: 16px;
             --radius-md: 8px;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -24,7 +24,7 @@
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            max-width: 1000px; 
+            max-width: 1200px; 
             margin: 0 auto; 
             padding: 40px 20px; 
             background-color: var(--bg-color); 
@@ -39,13 +39,79 @@
             color: var(--text-main);
             margin-bottom: 32px; 
             letter-spacing: -0.02em;
-            text-align: center;
+        }
+
+        /* Two-Column Layout */
+        .app-layout {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            background: var(--surface);
+            padding: 24px 16px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .sidebar-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-left: 12px;
+        }
+        .category-item {
+            padding: 12px;
+            margin-bottom: 4px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .category-item:hover {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+        .category-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .category-count {
+            background: var(--border);
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .category-item.active .category-count {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            min-width: 0; 
         }
 
         /* Search Bar */
         .search-container {
             position: relative;
-            margin-bottom: 40px;
+            margin-bottom: 24px;
         }
         .search-box { 
             width: 100%; 
@@ -55,7 +121,7 @@
             background-color: var(--surface);
             border: 2px solid transparent; 
             border-radius: 50px; 
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             transition: var(--transition);
             box-sizing: border-box; 
             color: var(--text-main);
@@ -67,7 +133,6 @@
         }
         .search-box::placeholder { color: #9CA3AF; }
         
-        /* Search Icon */
         .search-icon {
             position: absolute;
             left: 20px;
@@ -100,7 +165,7 @@
             justify-content: space-between; 
             align-items: center; 
             font-weight: 600; 
-            font-size: 17px;
+            font-size: 16px;
             transition: var(--transition);
         }
         .faq-header.active { 
@@ -109,82 +174,35 @@
             border-bottom: 1px solid var(--primary-light);
         }
         
-        .faq-content { 
-            padding: 24px; 
-            display: none; 
-            border-top: 1px solid var(--border);
-        }
+        .faq-content { padding: 24px; display: none; border-top: 1px solid var(--border); }
         
-        /* Layout Typography Matches Screenshot */
         .label-row { margin-bottom: 4px; }
         .bold-underlined { 
-            font-weight: 700; 
-            color: var(--text-main);
-            text-decoration: underline; 
-            text-decoration-thickness: 2px;
-            text-underline-offset: 4px;
-            font-size: 1.05em; 
+            font-weight: 700; color: var(--text-main); text-decoration: underline; 
+            text-decoration-thickness: 2px; text-underline-offset: 4px; font-size: 1.05em; 
         }
-        .category-italic { 
-            font-style: italic; 
-            font-weight: 500; 
-            color: var(--text-muted); 
-            margin-left: 8px; 
-        }
-        .description-text { 
-            margin-bottom: 24px; 
-            color: var(--text-muted); 
-            font-size: 15px; 
-        }
+        .category-italic { font-style: italic; font-weight: 500; color: var(--text-muted); margin-left: 8px; }
+        .description-text { margin-bottom: 24px; color: var(--text-muted); font-size: 15px; }
 
         /* Beautiful Modern Table */
-        .table-container {
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            border: 1px solid var(--border);
-        }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            background: var(--surface); 
-        }
-        th, td { 
-            padding: 16px; 
-            text-align: left; 
-            font-size: 0.95em; 
-            border-bottom: 1px solid var(--border);
-        }
+        .table-container { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; background: var(--surface); }
+        th, td { padding: 16px; text-align: left; font-size: 0.95em; border-bottom: 1px solid var(--border); }
         tr:last-child td { border-bottom: none; }
-        
-        th { 
-            background-color: #F9FAFB; 
-            color: var(--text-muted);
-            font-weight: 600; 
-            text-transform: uppercase;
-            font-size: 0.75em;
-            letter-spacing: 0.05em;
-        }
+        th { background-color: #F9FAFB; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75em; letter-spacing: 0.05em; }
         td { color: var(--text-main); }
         tr:hover td { background-color: #F9FAFB; }
-        
         .center-align { text-align: center; }
 
-        .arrow { 
-            font-size: 0.8em; 
-            color: #9CA3AF; 
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-        .active .arrow { 
-            transform: rotate(180deg); 
-            color: var(--primary); 
-        }
+        .arrow { font-size: 0.8em; color: #9CA3AF; transition: transform 0.3s ease; }
+        .active .arrow { transform: rotate(180deg); color: var(--primary); }
 
-        /* Loading & Error States */
-        .status-message {
-            text-align: center;
-            color: var(--text-muted);
-            margin-top: 40px;
-            font-weight: 500;
+        .status-message { text-align: center; color: var(--text-muted); margin-top: 40px; font-weight: 500; }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 800px) {
+            .app-layout { flex-direction: column; gap: 20px; }
+            .sidebar { width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
@@ -192,29 +210,76 @@
 
     <h2 class="main-title">Escallation Matrix & FAQs</h2>
 
-    <div class="search-container">
-        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-        <input type="text" id="search" class="search-box" placeholder="Search by problem or category..." onkeyup="filterFAQ()">
-    </div>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-title">Categories</div>
+            <div id="category-list">
+                <div style="padding: 12px; color: #9CA3AF; font-size: 14px;">Loading...</div>
+            </div>
+        </aside>
 
-    <div id="faq-container">
-        <div class="status-message">Fetching the latest data...</div>
+        <main class="main-content">
+            <div class="search-container">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" id="search" class="search-box" placeholder="Search by problem or category..." onkeyup="filterFAQ()">
+            </div>
+
+            <div id="faq-container">
+                <div class="status-message">Fetching the latest data...</div>
+            </div>
+        </main>
     </div>
 
     <script>
+        // UPDATED: Using the new Google Apps Script URL provided
         const API_URL = 'https://script.google.com/macros/s/AKfycbx2gwIHnqtmgMyfFKkZKYvZv4DUGNhGAk89lsfYUOigjvWObdTMtGmhrsJysgA-ICJcxQ/exec';
+        
         let faqData = [];
+        let currentCategory = 'All';
 
         async function fetchSheetData() {
             try {
                 const response = await fetch(API_URL);
                 faqData = await response.json();
+                renderCategories();
                 renderItems(faqData);
             } catch (err) {
                 document.getElementById('faq-container').innerHTML = "<div class='status-message' style='color: #EF4444;'>Connection error. Please check your Web App URL.</div>";
             }
+        }
+
+        // Dynamically build the sidebar based on sheet data
+        function renderCategories() {
+            const list = document.getElementById('category-list');
+            
+            // Extract unique categories, remove blanks, and sort alphabetically
+            const uniqueCategories = [...new Set(faqData.map(item => item.category).filter(c => c))].sort();
+            
+            // Create an array starting with "All", followed by the sorted categories
+            const categories = ['All', ...uniqueCategories];
+
+            list.innerHTML = categories.map(cat => {
+                // Count how many items belong to this category
+                const count = cat === 'All' ? faqData.length : faqData.filter(i => i.category === cat).length;
+                
+                return `
+                    <div class="category-item ${cat === currentCategory ? 'active' : ''}" 
+                         data-cat="${cat}" 
+                         onclick="selectCategory(this.getAttribute('data-cat'))">
+                        <span>${cat}</span>
+                        <span class="category-count">${count}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectCategory(cat) {
+            currentCategory = cat;
+            document.getElementById('search').value = ''; // Clear search when switching categories
+            renderCategories(); // Re-render to highlight the active category
+            filterFAQ(); // Filter the main list
         }
 
         function renderItems(items) {
@@ -287,14 +352,23 @@
 
         function filterFAQ() {
             const query = document.getElementById('search').value.toLowerCase();
-            const filtered = faqData.filter(item => 
-                (item.problem && item.problem.toLowerCase().includes(query)) || 
-                (item.category && item.category.toLowerCase().includes(query)) ||
-                (item.solution && item.solution.toLowerCase().includes(query))
-            );
+            
+            const filtered = faqData.filter(item => {
+                // Match search text
+                const matchesSearch = 
+                    (item.problem && item.problem.toLowerCase().includes(query)) || 
+                    (item.category && item.category.toLowerCase().includes(query)) ||
+                    (item.solution && item.solution.toLowerCase().includes(query));
+                
+                // Match selected category (or show all if 'All' is selected)
+                const matchesCategory = currentCategory === 'All' || item.category === currentCategory;
+
+                return matchesSearch && matchesCategory;
+            });
+
             renderItems(filtered);
             
-            // Auto-expand all results if user is actively searching
+            // Auto-expand all results if user is actively typing a search query
             if (query.length > 0) {
                 document.querySelectorAll('.faq-content').forEach(el => el.style.display = 'block');
                 document.querySelectorAll('.faq-header').forEach(el => el.classList.add('active'));
