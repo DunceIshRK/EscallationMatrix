@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escalation Matrix & FAQs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;        /* Vibrant Indigo */
+            --primary-light: #EEF2FF;  /* Soft Indigo Background */
+            --bg-color: #F9FAFB;       /* Light Gray Background */
+            --surface: #FFFFFF;        /* White Cards */
+            --text-main: #111827;      /* Dark Gray for Headings */
+            --text-muted: #6B7280;     /* Medium Gray for normal text */
+            --border: #E5E7EB;         /* Light Gray Borders */
+            --radius-lg: 16px;
+            --radius-md: 8px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            line-height: 1.6;
+        }
+        
+        /* Main Heading */
+        h2.main-title { 
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 32px; 
+            letter-spacing: -0.02em;
+            text-align: center;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .search-box { 
+            width: 100%; 
+            padding: 18px 24px 18px 50px; 
+            font-size: 16px; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--surface);
+            border: 2px solid transparent; 
+            border-radius: 50px; 
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            box-sizing: border-box; 
+            color: var(--text-main);
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+        .search-box::placeholder { color: #9CA3AF; }
+        
+        /* Search Icon */
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #9CA3AF;
+        }
+
+        /* FAQ/Accordion Styling */
+        .faq-item { 
+            background: var(--surface); 
+            margin-bottom: 16px; 
+            border: 1px solid var(--border); 
+            border-radius: var(--radius-lg); 
+            box-shadow: var(--shadow-sm); 
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        .faq-item:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: #D1D5DB;
+        }
+        
+        .faq-header { 
+            padding: 20px 24px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: 600; 
+            font-size: 17px;
+            transition: var(--transition);
+        }
+        .faq-header.active { 
+            background-color: var(--primary-light); 
+            color: var(--primary);
+            border-bottom: 1px solid var(--primary-light);
+        }
+        
+        .faq-content { 
+            padding: 24px; 
+            display: none; 
+            border-top: 1px solid var(--border);
+        }
+        
+        /* Layout Typography Matches Screenshot */
+        .label-row { margin-bottom: 4px; }
+        .bold-underlined { 
+            font-weight: 700; 
+            color: var(--text-main);
+            text-decoration: underline; 
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
+            font-size: 1.05em; 
+        }
+        .category-italic { 
+            font-style: italic; 
+            font-weight: 500; 
+            color: var(--text-muted); 
+            margin-left: 8px; 
+        }
+        .description-text { 
+            margin-bottom: 24px; 
+            color: var(--text-muted); 
+            font-size: 15px; 
+        }
+
+        /* Beautiful Modern Table */
+        .table-container {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            background: var(--surface); 
+        }
+        th, td { 
+            padding: 16px; 
+            text-align: left; 
+            font-size: 0.95em; 
+            border-bottom: 1px solid var(--border);
+        }
+        tr:last-child td { border-bottom: none; }
+        
+        th { 
+            background-color: #F9FAFB; 
+            color: var(--text-muted);
+            font-weight: 600; 
+            text-transform: uppercase;
+            font-size: 0.75em;
+            letter-spacing: 0.05em;
+        }
+        td { color: var(--text-main); }
+        tr:hover td { background-color: #F9FAFB; }
+        
+        .center-align { text-align: center; }
+
+        .arrow { 
+            font-size: 0.8em; 
+            color: #9CA3AF; 
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .active .arrow { 
+            transform: rotate(180deg); 
+            color: var(--primary); 
+        }
+
+        /* Loading & Error States */
+        .status-message {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 40px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 class="main-title">Escallation Matrix & FAQs</h2>
+
+    <div class="search-container">
+        <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input type="text" id="search" class="search-box" placeholder="Search by problem or category..." onkeyup="filterFAQ()">
+    </div>
+
+    <div id="faq-container">
+        <div class="status-message">Fetching the latest data...</div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbx2gwIHnqtmgMyfFKkZKYvZv4DUGNhGAk89lsfYUOigjvWObdTMtGmhrsJysgA-ICJcxQ/exec';
+        let faqData = [];
+
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(API_URL);
+                faqData = await response.json();
+                renderItems(faqData);
+            } catch (err) {
+                document.getElementById('faq-container').innerHTML = "<div class='status-message' style='color: #EF4444;'>Connection error. Please check your Web App URL.</div>";
+            }
+        }
+
+        function renderItems(items) {
+            const container = document.getElementById('faq-container');
+            if (items.length === 0) {
+                container.innerHTML = "<div class='status-message'>No matching results found.</div>";
+                return;
+            }
+
+            container.innerHTML = items.map((item, i) => `
+                <div class="faq-item">
+                    <div class="faq-header" onclick="toggleAccordion(${i})" id="header-${i}">
+                        <span>${item.problem}</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-content" id="content-${i}">
+                        
+                        <div class="label-row">
+                            <span class="bold-underlined">Problem Statement</span>
+                            <span class="category-italic">(${item.category})</span>
+                        </div>
+                        <div class="description-text">${item.problem}</div>
+
+                        <div class="label-row">
+                            <span class="bold-underlined">Solution</span>
+                        </div>
+                        <div class="description-text">${item.solution}</div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mail to</th>
+                                        <th>CC to</th>
+                                        <th class="center-align">Contact Person</th>
+                                        <th class="center-align">Ph No</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${item.contacts.filter(c => c.mail && c.mail.toString().trim() !== "").map(c => `
+                                        <tr>
+                                            <td><strong>${c.level}</strong> - ${c.mail}</td>
+                                            <td>${c.cc || '-'}</td>
+                                            <td class="center-align">${c.person || '-'}</td>
+                                            <td class="center-align">${c.ph || '-'}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleAccordion(index) {
+            const content = document.getElementById(`content-${index}`);
+            const header = document.getElementById(`header-${index}`);
+            const isOpen = content.style.display === "block";
+
+            // Close all others
+            document.querySelectorAll('.faq-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.faq-header').forEach(el => el.classList.remove('active'));
+
+            if (!isOpen) {
+                content.style.display = "block";
+                header.classList.add('active');
+            }
+        }
+
+        function filterFAQ() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const filtered = faqData.filter(item => 
+                (item.problem && item.problem.toLowerCase().includes(query)) || 
+                (item.category && item.category.toLowerCase().includes(query)) ||
+                (item.solution && item.solution.toLowerCase().includes(query))
+            );
+            renderItems(filtered);
+            
+            // Auto-expand all results if user is actively searching
+            if (query.length > 0) {
+                document.querySelectorAll('.faq-content').forEach(el => el.style.display = 'block');
+                document.querySelectorAll('.faq-header').forEach(el => el.classList.add('active'));
+            }
+        }
+
+        fetchSheetData();
+    </script>
+</body>
+</html>
