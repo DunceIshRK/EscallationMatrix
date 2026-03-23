@@ -41,25 +41,23 @@
         .main-content { flex-grow: 1; min-width: 0; width: 100%; }
 
         .search-container { position: relative; margin-bottom: 30px; width: 100%; }
-        
-        /* UPDATED SEARCH BOX STYLES */
         .search-box { 
             width: 100%; 
             padding: 18px 50px 18px 50px; 
             font-size: 16px; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--surface); 
-            border: 2px solid #D1D5DB; /* Made border visible by default */
+            border: 2px solid #D1D5DB; 
             border-radius: 50px; 
-            box-shadow: var(--shadow-md); /* Increased default shadow to make it pop */
+            box-shadow: var(--shadow-md); 
             transition: var(--transition); 
             color: var(--text-main); 
         }
-        .search-box:hover { border-color: #9CA3AF; box-shadow: var(--shadow-hover); } /* Added hover effect */
+        .search-box:hover { border-color: #9CA3AF; box-shadow: var(--shadow-hover); } 
         .search-box:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-        .search-box::placeholder { color: #6B7280; font-weight: 500; } /* Darkened placeholder slightly */
+        .search-box::placeholder { color: #6B7280; font-weight: 500; } 
         
-        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; color: #6B7280; pointer-events: none; } /* Darkened and slightly enlarged icon */
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; color: #6B7280; pointer-events: none; } 
         
         .clear-btn {
             position: absolute;
@@ -82,10 +80,25 @@
 
         .faq-item { background: var(--surface); margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: var(--transition); overflow: hidden; width: 100%; }
         .faq-item:hover { border-color: #D1D5DB; box-shadow: var(--shadow-md); }
-        .faq-header { padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px; transition: var(--transition); word-wrap: break-word; }
+        
+        /* UPDATED RIBBON BACKGROUND */
+        .faq-header { 
+            padding: 20px 24px; 
+            cursor: pointer; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: 600; 
+            font-size: 16px; 
+            transition: var(--transition); 
+            word-wrap: break-word; 
+            background-color: #F4F8FF; /* Very light blue */
+        }
+        .faq-header:hover { background-color: #EBF4FF; } /* Slightly darker blue on hover */
+        
         .faq-header span:first-child { flex: 1; padding-right: 15px; line-height: 1.4; }
         .faq-header.active { background-color: var(--primary-light); color: var(--primary); border-bottom: 1px solid var(--primary-light); }
-        .faq-content { padding: 24px; display: none; border-top: 1px solid var(--border); width: 100%; }
+        .faq-content { padding: 24px; display: none; border-top: 1px solid var(--border); width: 100%; background-color: var(--surface); }
         
         .label-row { margin-bottom: 4px; }
         .bold-underlined { font-weight: 700; color: var(--text-main); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; font-size: 1.05em; }
