@@ -40,22 +40,26 @@
 
         .main-content { flex-grow: 1; min-width: 0; width: 100%; }
 
-        .search-container { position: relative; margin-bottom: 24px; width: 100%; }
+        .search-container { position: relative; margin-bottom: 30px; width: 100%; }
+        
+        /* UPDATED SEARCH BOX STYLES */
         .search-box { 
             width: 100%; 
             padding: 18px 50px 18px 50px; 
             font-size: 16px; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--surface); 
-            border: 2px solid transparent; 
+            border: 2px solid #D1D5DB; /* Made border visible by default */
             border-radius: 50px; 
-            box-shadow: var(--shadow-sm); 
+            box-shadow: var(--shadow-md); /* Increased default shadow to make it pop */
             transition: var(--transition); 
             color: var(--text-main); 
         }
+        .search-box:hover { border-color: #9CA3AF; box-shadow: var(--shadow-hover); } /* Added hover effect */
         .search-box:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-        .search-box::placeholder { color: #9CA3AF; }
-        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #9CA3AF; pointer-events: none; }
+        .search-box::placeholder { color: #6B7280; font-weight: 500; } /* Darkened placeholder slightly */
+        
+        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; color: #6B7280; pointer-events: none; } /* Darkened and slightly enlarged icon */
         
         .clear-btn {
             position: absolute;
@@ -64,7 +68,7 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #9CA3AF;
+            color: #6B7280;
             cursor: pointer;
             display: none; 
             padding: 4px;
@@ -74,9 +78,10 @@
             transition: var(--transition);
         }
         .clear-btn:hover { color: var(--text-main); background: #F3F4F6; }
-        .clear-btn svg { width: 18px; height: 18px; }
+        .clear-btn svg { width: 20px; height: 20px; }
 
         .faq-item { background: var(--surface); margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: var(--transition); overflow: hidden; width: 100%; }
+        .faq-item:hover { border-color: #D1D5DB; box-shadow: var(--shadow-md); }
         .faq-header { padding: 20px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px; transition: var(--transition); word-wrap: break-word; }
         .faq-header span:first-child { flex: 1; padding-right: 15px; line-height: 1.4; }
         .faq-header.active { background-color: var(--primary-light); color: var(--primary); border-bottom: 1px solid var(--primary-light); }
@@ -157,7 +162,7 @@
         
         let faqData = [];
         let currentCategory = 'All';
-        let clickedItems = new Set(); // Stores tracked clicks for the session
+        let clickedItems = new Set(); 
 
         async function fetchSheetData() {
             try {
@@ -275,10 +280,9 @@
                 content.style.display = "block";
                 header.classList.add('active');
                 
-                // Track click quietly, but only once per session
                 const problemTitle = element.getAttribute('data-problem');
                 if (problemTitle && !clickedItems.has(problemTitle)) {
-                    clickedItems.add(problemTitle); // Add it to memory
+                    clickedItems.add(problemTitle); 
                     const trackingUrl = API_URL + '?action=click&problem=' + encodeURIComponent(problemTitle);
                     fetch(trackingUrl, { mode: 'no-cors' }).catch(err => console.log('Tracking error', err));
                 }
