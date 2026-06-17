@@ -7,127 +7,250 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
-
         :root {
-            --primary: #4F46E5;        
-            --primary-light: #EEF2FF;  
-            --bg-color: #F9FAFB;       
-            --surface: #FFFFFF;        
-            --text-main: #111827;      
-            --text-muted: #6B7280;     
-            --border: #E5E7EB;         
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --bg-color: #F9FAFB;
+            --surface: #FFFFFF;
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
             --radius-lg: 16px;
             --radius-md: 8px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-hover: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
             --transition: all 0.3s ease;
         }
-
         html, body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; max-width: 1200px; margin: 0 auto; padding: 40px 20px; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
-        h2.main-title { font-size: 32px; font-weight: 700; color: var(--text-main); margin-bottom: 32px; letter-spacing: -0.02em; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
 
+        h2.main-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        /* ── Tab Bar ── */
+        .tab-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 32px;
+            background: var(--surface);
+            padding: 6px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            width: fit-content;
+            box-shadow: var(--shadow-sm);
+        }
+        .tab-btn {
+            padding: 10px 28px;
+            border-radius: 50px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { color: var(--text-main); background: var(--bg-color); }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ── Layout ── */
         .app-layout { display: flex; gap: 40px; align-items: flex-start; width: 100%; }
-
-        .sidebar { width: 260px; flex-shrink: 0; background: var(--surface); padding: 24px 16px; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
-        .sidebar-title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; margin-bottom: 16px; padding-left: 12px; }
-        .category-item { padding: 12px; margin-bottom: 4px; border-radius: var(--radius-md); cursor: pointer; color: var(--text-muted); font-weight: 500; transition: var(--transition); font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            background: var(--surface);
+            padding: 24px 16px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        .sidebar-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-left: 12px;
+        }
+        .category-item {
+            padding: 12px;
+            margin-bottom: 4px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         .category-item:hover { background-color: var(--bg-color); color: var(--text-main); }
         .category-item.active { background-color: var(--primary-light); color: var(--primary); font-weight: 600; }
-        .category-count { background: var(--border); color: var(--text-muted); font-size: 12px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+        .category-count {
+            background: var(--border);
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
         .category-item.active .category-count { background: var(--primary); color: white; }
 
+        /* ── Main content ── */
         .main-content { flex-grow: 1; min-width: 0; width: 100%; }
-
         .search-container { position: relative; margin-bottom: 30px; width: 100%; }
-        .search-box { 
-            width: 100%; 
-            padding: 18px 50px 18px 50px; 
-            font-size: 16px; 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--surface); 
-            border: 2px solid #D1D5DB; 
-            border-radius: 50px; 
-            box-shadow: var(--shadow-md); 
-            transition: var(--transition); 
-            color: var(--text-main); 
+        .search-box {
+            width: 100%;
+            padding: 18px 50px 18px 50px;
+            font-size: 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--surface);
+            border: 2px solid #D1D5DB;
+            border-radius: 50px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            color: var(--text-main);
         }
-        .search-box:hover { border-color: #9CA3AF; box-shadow: var(--shadow-hover); } 
+        .search-box:hover { border-color: #9CA3AF; box-shadow: var(--shadow-hover); }
         .search-box:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-        .search-box::placeholder { color: #6B7280; font-weight: 500; } 
-        
-        .search-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; color: #6B7280; pointer-events: none; } 
-        
-        .clear-btn {
-            position: absolute;
-            right: 20px;
-            top: 50%;
+        .search-box::placeholder { color: #6B7280; font-weight: 500; }
+        .search-icon {
+            position: absolute; left: 20px; top: 50%;
             transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #6B7280;
-            cursor: pointer;
-            display: none; 
-            padding: 4px;
-            border-radius: 50%;
-            align-items: center;
-            justify-content: center;
+            width: 22px; height: 22px; color: #6B7280; pointer-events: none;
+        }
+        .clear-btn {
+            position: absolute; right: 20px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; color: #6B7280;
+            cursor: pointer; display: none; padding: 4px;
+            border-radius: 50%; align-items: center; justify-content: center;
             transition: var(--transition);
         }
         .clear-btn:hover { color: var(--text-main); background: #F3F4F6; }
         .clear-btn svg { width: 20px; height: 20px; }
 
-        .faq-item { background: var(--surface); margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: var(--transition); overflow: hidden; width: 100%; }
-        .faq-item:hover { border-color: #D1D5DB; box-shadow: var(--shadow-md); }
-        
-        /* UPDATED RIBBON BACKGROUND */
-        .faq-header { 
-            padding: 20px 24px; 
-            cursor: pointer; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            font-weight: 600; 
-            font-size: 16px; 
-            transition: var(--transition); 
-            word-wrap: break-word; 
-            background-color: #F4F8FF; /* Very light blue */
+        /* ── FAQ items ── */
+        .faq-item {
+            background: var(--surface);
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            overflow: hidden;
+            width: 100%;
         }
-        .faq-header:hover { background-color: #EBF4FF; } /* Slightly darker blue on hover */
-        
+        .faq-item:hover { border-color: #D1D5DB; box-shadow: var(--shadow-md); }
+        .faq-header {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            word-wrap: break-word;
+            background-color: #F4F8FF;
+        }
+        .faq-header:hover { background-color: #EBF4FF; }
         .faq-header span:first-child { flex: 1; padding-right: 15px; line-height: 1.4; }
-        .faq-header.active { background-color: var(--primary-light); color: var(--primary); border-bottom: 1px solid var(--primary-light); }
-        .faq-content { padding: 24px; display: none; border-top: 1px solid var(--border); width: 100%; background-color: var(--surface); }
-        
+        .faq-header.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border-bottom: 1px solid var(--primary-light);
+        }
+        .faq-content {
+            padding: 24px;
+            display: none;
+            border-top: 1px solid var(--border);
+            width: 100%;
+            background-color: var(--surface);
+        }
         .label-row { margin-bottom: 4px; }
-        .bold-underlined { font-weight: 700; color: var(--text-main); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; font-size: 1.05em; }
+        .bold-underlined {
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
+            font-size: 1.05em;
+        }
         .category-italic { font-style: italic; font-weight: 500; color: var(--text-muted); margin-left: 8px; }
-        .description-text { margin-bottom: 24px; color: var(--text-muted); font-size: 15px; overflow-wrap: break-word; word-wrap: break-word; white-space: pre-line; }
-
-        .table-container { width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border); overflow-x: auto; -webkit-overflow-scrolling: touch; background: var(--surface); }
+        .description-text {
+            margin-bottom: 24px;
+            color: var(--text-muted);
+            font-size: 15px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            white-space: pre-line;
+        }
+        .table-container {
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            background: var(--surface);
+        }
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
         th, td { padding: 14px 16px; text-align: left; font-size: 0.9em; border-bottom: 1px solid var(--border); }
         tr:last-child td { border-bottom: none; }
-        th { background-color: #F9FAFB; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75em; letter-spacing: 0.05em; }
+        th {
+            background-color: #F9FAFB;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75em;
+            letter-spacing: 0.05em;
+        }
         td { color: var(--text-main); word-break: break-word; }
         tr:hover td { background-color: #F9FAFB; }
         .center-align { text-align: center; }
-
         .arrow { font-size: 0.8em; color: #9CA3AF; transition: transform 0.3s ease; flex-shrink: 0; }
         .active .arrow { transform: rotate(180deg); color: var(--primary); }
-        
         .click-badge { font-size: 0.75em; color: #9CA3AF; font-weight: 400; margin-left: auto; margin-right: 15px; }
-
         .status-message { text-align: center; color: var(--text-muted); margin-top: 40px; font-weight: 500; }
 
+        /* ── Mobile ── */
         @media (max-width: 800px) {
             body { padding: 20px 15px; }
-            h2.main-title { font-size: 24px; margin-bottom: 24px; text-align: left; }
+            h2.main-title { font-size: 24px; margin-bottom: 16px; }
+            .tab-bar { margin-bottom: 20px; }
+            .tab-btn { padding: 8px 18px; font-size: 14px; }
             .app-layout { flex-direction: column; gap: 20px; }
             .sidebar { width: 100%; padding: 12px; background: transparent; border: none; box-shadow: none; }
             .sidebar-title { display: none; }
-            #category-list { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px; -ms-overflow-style: none; scrollbar-width: none; }
+            #category-list {
+                display: flex; overflow-x: auto; gap: 10px; padding-bottom: 5px;
+                -ms-overflow-style: none; scrollbar-width: none;
+            }
             #category-list::-webkit-scrollbar { display: none; }
             .category-item { flex-shrink: 0; margin-bottom: 0; background: #fff; border: 1px solid var(--border); }
             .faq-header { padding: 16px; font-size: 15px; }
@@ -139,8 +262,17 @@
     </style>
 </head>
 <body>
+    <h2 class="main-title">Escalation Matrix & FAQs</h2>
 
-    <h2 class="main-title">Escallation Matrix & FAQs</h2>
+    <!-- ── Tab Bar ── -->
+    <div class="tab-bar">
+        <button class="tab-btn active" id="tab-darkstore" onclick="switchTab('darkstore')">
+            🏪 Darkstore
+        </button>
+        <button class="tab-btn" id="tab-smart" onclick="switchTab('smart')">
+            ⚡ Smart
+        </button>
+    </div>
 
     <div class="app-layout">
         <aside class="sidebar">
@@ -149,111 +281,132 @@
                 <div style="padding: 12px; color: #9CA3AF; font-size: 14px;">Loading...</div>
             </div>
         </aside>
-
         <main class="main-content">
             <div class="search-container">
-                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-                <input type="text" id="search" class="search-box" placeholder="Search by problem or category..." onkeyup="filterFAQ()">
-                
+                <input type="text" id="search" class="search-box"
+                       placeholder="Search by problem or category…" onkeyup="filterFAQ()">
                 <button id="clear-search" class="clear-btn" onclick="clearSearch()" aria-label="Clear Search">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
-
             <div id="faq-container">
-                <div class="status-message">Fetching the latest data...</div>
+                <div class="status-message">Fetching the latest data…</div>
             </div>
         </main>
     </div>
 
     <script>
+        // ── Replace with your deployed Web App URL ──
         const API_URL = 'https://script.google.com/macros/s/AKfycbx2gwIHnqtmgMyfFKkZKYvZv4DUGNhGAk89lsfYUOigjvWObdTMtGmhrsJysgA-ICJcxQ/exec';
-        
-        let faqData = [];
-        let currentCategory = 'All';
-        let clickedItems = new Set(); 
 
-        async function fetchSheetData() {
+        let faqData       = [];
+        let currentCategory = 'All';
+        let currentTab    = 'darkstore';
+
+        // Track clicks per tab separately so switching tabs resets the guard
+        let clickedItems  = { darkstore: new Set(), smart: new Set() };
+
+        // ── Fetch data for a given tab ──────────────────────────────────────
+        async function fetchSheetData(tab) {
+            document.getElementById('faq-container').innerHTML =
+                "<div class='status-message'>Fetching the latest data…</div>";
+            document.getElementById('category-list').innerHTML =
+                "<div style='padding:12px;color:#9CA3AF;font-size:14px;'>Loading…</div>";
             try {
-                const response = await fetch(API_URL);
+                const response = await fetch(API_URL + '?tab=' + tab);
                 faqData = await response.json();
                 renderCategories();
                 renderItems(faqData);
             } catch (err) {
-                document.getElementById('faq-container').innerHTML = "<div class='status-message' style='color: #EF4444;'>Connection error. Please check your Web App URL.</div>";
+                document.getElementById('faq-container').innerHTML =
+                    "<div class='status-message' style='color:#EF4444;'>Connection error. Please check your Web App URL.</div>";
             }
         }
 
+        // ── Switch between Darkstore / Smart tabs ───────────────────────────
+        function switchTab(tab) {
+            if (tab === currentTab) return;          // no-op if already active
+            currentTab = tab;
+
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+
+            // Reset search & category filter
+            document.getElementById('search').value = '';
+            document.getElementById('clear-search').style.display = 'none';
+            currentCategory = 'All';
+
+            fetchSheetData(tab);
+        }
+
+        // ── Render sidebar categories ────────────────────────────────────────
         function renderCategories() {
             const list = document.getElementById('category-list');
-            let allCategories = [];
+            let allCats = [];
             faqData.forEach(item => {
                 if (item.category) {
-                    const cats = item.category.split(',').map(c => c.trim()).filter(c => c !== "");
-                    allCategories.push(...cats);
+                    item.category.split(',').map(c => c.trim()).filter(Boolean).forEach(c => allCats.push(c));
                 }
             });
-            
-            const uniqueCategories = [...new Set(allCategories)].sort();
-            const categories = ['All', ...uniqueCategories];
-
-            list.innerHTML = categories.map(cat => {
-                const count = cat === 'All' ? faqData.length : faqData.filter(i => {
-                    if (!i.category) return false;
-                    const itemCats = i.category.split(',').map(c => c.trim());
-                    return itemCats.includes(cat);
-                }).length;
-                
+            const unique = ['All', ...[...new Set(allCats)].sort()];
+            list.innerHTML = unique.map(cat => {
+                const count = cat === 'All'
+                    ? faqData.length
+                    : faqData.filter(i => {
+                        if (!i.category) return false;
+                        return i.category.split(',').map(c => c.trim()).includes(cat);
+                    }).length;
                 return `
-                    <div class="category-item ${cat === currentCategory ? 'active' : ''}" 
-                         data-cat="${cat}" 
+                    <div class="category-item ${cat === currentCategory ? 'active' : ''}"
+                         data-cat="${cat}"
                          onclick="selectCategory(this.getAttribute('data-cat'))">
                         <span>${cat}</span>
                         <span class="category-count">${count}</span>
-                    </div>
-                `;
+                    </div>`;
             }).join('');
         }
 
         function selectCategory(cat) {
             currentCategory = cat;
-            document.getElementById('search').value = ''; 
-            document.getElementById('clear-search').style.display = 'none'; 
-            renderCategories(); 
-            filterFAQ(); 
+            document.getElementById('search').value = '';
+            document.getElementById('clear-search').style.display = 'none';
+            renderCategories();
+            filterFAQ();
         }
 
+        // ── Render FAQ accordion items ───────────────────────────────────────
         function renderItems(items) {
             const container = document.getElementById('faq-container');
-            if (items.length === 0) {
+            if (!items.length) {
                 container.innerHTML = "<div class='status-message'>No matching results found.</div>";
                 return;
             }
-
             container.innerHTML = items.map((item, i) => `
                 <div class="faq-item">
-                    <div class="faq-header" onclick="toggleAccordion(${i}, this)" id="header-${i}" data-problem="${item.problem ? item.problem.replace(/"/g, '&quot;') : ''}">
+                    <div class="faq-header" onclick="toggleAccordion(${i}, this)"
+                         id="header-${i}"
+                         data-problem="${item.problem ? item.problem.replace(/"/g, '&quot;') : ''}">
                         <span>${item.problem}</span>
                         <span class="click-badge">${item.clicks > 0 ? item.clicks + ' views' : ''}</span>
                         <span class="arrow">▼</span>
                     </div>
                     <div class="faq-content" id="content-${i}">
-                        
                         <div class="label-row">
                             <span class="bold-underlined">Problem Statement</span>
                             <span class="category-italic">(${item.category})</span>
                         </div>
                         <div class="description-text">${item.problem}</div>
-
                         <div class="label-row">
                             <span class="bold-underlined">Solution</span>
                         </div>
                         <div class="description-text">${item.solution}</div>
-
                         <div class="table-container">
                             <table>
                                 <thead>
@@ -265,81 +418,84 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    ${item.contacts.filter(c => c.mail && c.mail.toString().trim() !== "").map(c => `
+                                    ${item.contacts
+                                        .filter(c => c.mail && c.mail.toString().trim() !== "")
+                                        .map(c => `
                                         <tr>
-                                            <td><strong>${c.level}</strong> - <a href="mailto:${c.mail}" style="color: var(--primary); text-decoration: none;">${c.mail}</a></td>
-                                            <td>${c.cc || '-'}</td>
-                                            <td class="center-align">${c.person || '-'}</td>
-                                            <td class="center-align">${c.ph ? `<a href="tel:${c.ph}" style="color: var(--primary); text-decoration: none;">${c.ph}</a>` : '-'}</td>
-                                        </tr>
-                                    `).join('')}
+                                            <td><strong>${c.level}</strong> – <a href="mailto:${c.mail}" style="color:var(--primary);text-decoration:none;">${c.mail}</a></td>
+                                            <td>${c.cc || '–'}</td>
+                                            <td class="center-align">${c.person || '–'}</td>
+                                            <td class="center-align">${c.ph
+                                                ? `<a href="tel:${c.ph}" style="color:var(--primary);text-decoration:none;">${c.ph}</a>`
+                                                : '–'}</td>
+                                        </tr>`).join('')}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
+        // ── Accordion toggle + click tracking ───────────────────────────────
         function toggleAccordion(index, element) {
             const content = document.getElementById(`content-${index}`);
-            const header = document.getElementById(`header-${index}`);
-            const isOpen = content.style.display === "block";
+            const header  = document.getElementById(`header-${index}`);
+            const isOpen  = content.style.display === "block";
 
+            // Close all
             document.querySelectorAll('.faq-content').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.faq-header').forEach(el => el.classList.remove('active'));
 
             if (!isOpen) {
                 content.style.display = "block";
                 header.classList.add('active');
-                
+
+                // Track click — once per problem per tab per session
                 const problemTitle = element.getAttribute('data-problem');
-                if (problemTitle && !clickedItems.has(problemTitle)) {
-                    clickedItems.add(problemTitle); 
-                    const trackingUrl = API_URL + '?action=click&problem=' + encodeURIComponent(problemTitle);
-                    fetch(trackingUrl, { mode: 'no-cors' }).catch(err => console.log('Tracking error', err));
+                if (problemTitle && !clickedItems[currentTab].has(problemTitle)) {
+                    clickedItems[currentTab].add(problemTitle);
+                    const trackingUrl = API_URL
+                        + '?action=click'
+                        + '&problem=' + encodeURIComponent(problemTitle)
+                        + '&tab='     + currentTab;
+                    fetch(trackingUrl, { mode: 'no-cors' })
+                        .catch(err => console.log('Tracking error', err));
                 }
             }
         }
 
+        // ── Search / filter ──────────────────────────────────────────────────
         function filterFAQ() {
             const searchInput = document.getElementById('search');
-            const clearBtn = document.getElementById('clear-search');
-            const queryText = searchInput.value.toLowerCase();
-            
+            const clearBtn    = document.getElementById('clear-search');
+            const queryText   = searchInput.value.toLowerCase();
             clearBtn.style.display = queryText.length > 0 ? 'flex' : 'none';
 
-            const searchWords = queryText.split(' ').filter(word => word.trim() !== '');
-
+            const words = queryText.split(' ').filter(w => w.trim() !== '');
             const filtered = faqData.filter(item => {
-                const matchesSearch = searchWords.length === 0 || searchWords.every(word => 
-                    (item.problem && item.problem.toLowerCase().includes(word)) || 
+                const matchesSearch = words.length === 0 || words.every(word =>
+                    (item.problem  && item.problem.toLowerCase().includes(word))  ||
                     (item.category && item.category.toLowerCase().includes(word)) ||
                     (item.solution && item.solution.toLowerCase().includes(word))
                 );
-                
-                let matchesCategory = false;
-                if (currentCategory === 'All') {
-                    matchesCategory = true;
-                } else if (item.category) {
-                    const itemCats = item.category.split(',').map(c => c.trim());
-                    matchesCategory = itemCats.includes(currentCategory);
+                let matchesCategory = currentCategory === 'All';
+                if (!matchesCategory && item.category) {
+                    matchesCategory = item.category.split(',').map(c => c.trim()).includes(currentCategory);
                 }
-
                 return matchesSearch && matchesCategory;
             });
-
             renderItems(filtered);
         }
 
         function clearSearch() {
             const searchInput = document.getElementById('search');
-            searchInput.value = ''; 
-            filterFAQ(); 
-            searchInput.focus(); 
+            searchInput.value = '';
+            filterFAQ();
+            searchInput.focus();
         }
 
-        fetchSheetData();
+        // ── Boot ─────────────────────────────────────────────────────────────
+        fetchSheetData(currentTab);
     </script>
 </body>
 </html>
